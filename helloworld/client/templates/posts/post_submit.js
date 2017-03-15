@@ -20,10 +20,8 @@ Template.postSubmit.events({
                 alert('This link has already been posted. (该链接已经存在)')
             }
 
-            Router.go('postPage', {_id: result._id});
-
         })
-        post._id = Posts.insert(post);
-        Router.go('postPage', post);
+
+        Router.go('postsList');
     }
 })

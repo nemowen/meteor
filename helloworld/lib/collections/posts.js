@@ -5,11 +5,12 @@ Posts = new Mongo.Collection('posts');
 
 Meteor.methods({
     postInsert: function (postAttributes) {
-        // check(Meteor.userId(), String);
-        // check(postAttributes, {
-        //     title: String,
-        //     url: String
-        // });
+        if (Meteor.isServer) {
+            postAttributes.title += "(Server)";
+            Meteor._sleepForMs(5000);
+        } else {
+            postAttributes.title += "(Client)";
+        }
 
         var postWithSameLink = Posts.findOne({url: postAttributes.url});
         if (postWithSameLink) {
@@ -22,7 +23,6 @@ Meteor.methods({
         var user = Meteor.user();
         var post = _.extend(postAttributes, {
             userId: user._id,
-            author: user.username,
             submitted: new Date()
         });
 
